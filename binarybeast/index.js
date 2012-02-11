@@ -15,7 +15,7 @@
 var 	tournament	= require('./tournament'),
 	team		= require('./team'),
 	game		= require('./game'),
-	country		= require('./country')
+	country		= require('./country'),
 	https		= require('https');
 //	querystring	= require('querystring');
 
