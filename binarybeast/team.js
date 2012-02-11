@@ -72,7 +72,7 @@ team.prototype.insert = function(tourney_id, display_name, options, callback) {
  *
  * @return {null}
  */
-team.prototype.update(tourney_team_id, options, callback) {
+team.prototype.update = function(tourney_team_id, options, callback) {
 
 	this.bb.call('Tourney.TourneyTeam.Update', this.bb.extend({
 		'tourney_team_id':	tourney_team_id
@@ -160,11 +160,11 @@ team.prototype.confirm = function(tourney_team_id, callback) {
  * @return {null}
  */
 team.prototype.delete = function(tourney_team_id, callback) {
-	this.bb.call('Tourney.TourneyTeam.Delete', {'tourney_team_id':tourney_team_id, callback);
+	this.bb.call('Tourney.TourneyTeam.Delete', {'tourney_team_id':tourney_team_id}, callback);
 };
 
 /**
- * bb.team.report_win(tourney_id, tourney_team_id, o_tourney_team_id, [options, callback]) 
+ * bb.team.reportWin(tourney_id, tourney_team_id, o_tourney_team_id, [options, callback]) 
  * 
  * This wrapper method will report a team's win (Tourney.TourneyTeam.ReportWin)
  *
@@ -187,7 +187,7 @@ team.prototype.delete = function(tourney_team_id, callback) {
  *
  * @return {null}
  */
-team.prototype.report_win = function(tourney_id, tourney_team_id, o_tourney_team_id, options, callback) {
+team.prototype.reportWin = function(tourney_id, tourney_team_id, o_tourney_team_id, options, callback) {
 
 	if(typeof options == 'function') {
 		callback = options;
@@ -206,7 +206,7 @@ team.prototype.report_win = function(tourney_id, tourney_team_id, o_tourney_team
 };
 
 /**
- * bb.team.get_opponent(tourney_team_id)
+ * bb.team.getOpponent(tourney_team_id)
  * 
  * This wrapper will return the TourneyTeamID of the given team (Tourney.TourneyTeam.GetOTourneyTeamID)
  * 
@@ -226,7 +226,7 @@ team.prototype.report_win = function(tourney_id, tourney_team_id, o_tourney_team
  *
  * @return {null}
  */
-team.prototype.get_opponent = function(tourney_team_id) {
+team.prototype.getOpponent = function(tourney_team_id) {
 	this.bb.call('Tourney.TourneyTeam.GetOTourneyTeamID', {'tourney_team_id':tourney_team_id}, callback);
 };
 

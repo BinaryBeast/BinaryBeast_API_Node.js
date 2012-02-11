@@ -31,7 +31,7 @@ var country = function(bb) {
 country.prototype = {
 
 	//Reference to the main API Class
-	country: 		null
+	bb: 		null
 };
 
 /**
@@ -49,4 +49,4 @@ country.prototype.search = function(filter, callback) {
 };
 
 
-modules.export = country;
+module.exports = country;
