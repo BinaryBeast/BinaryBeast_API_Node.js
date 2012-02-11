@@ -1,10 +1,6 @@
-var http = require('http');
+var bb = require('./lib/binarybeast');
+
+bb = new bb('asdf');
 
 
-
-http.createServer(function(request, response) {
-
-	response.writeHead(200);
-	response.end('Test!!');
-
-}).listen(80);
+console.log(bb);
