@@ -13,6 +13,9 @@
 
 //Modules containing wrapper methods and other depdencies
 var 	tournament	= require('./tournament'),
+	team		= require('./team'),
+	game		= require('./game'),
+	country		= require('./country')
 	https		= require('https')
 //	querystring	= require('querystring');
 
@@ -24,7 +27,11 @@ var BinaryBeast = function(api_key) {
 
 	this.api_key = api_key;
 
+	//Instantiate the content-specific service wrapper modules
 	this.tournament = new tournament(this);	
+	this.team	= new team(this);
+	this.game	= new game(this);
+	this.country	= new country(this);
 }
 /**
  * Properties
@@ -49,14 +56,11 @@ BinaryBeast.prototype = {
 	//Store the api key
 	api_key: 		null,
 
-	//Wrapper modules
+	//Service wrapper modules
 	tournament: 		null,
 	team: 			null,
 	country:		null,
 	game:			null,
-
-	//jQuery extend();
-	extend:			null
 
 };
 
@@ -66,7 +70,7 @@ BinaryBeast.prototype = {
  * @param svc		A Service name (ie 'Tourney.TourneyCreate.Create')
  * @param args		An associate array of arguments ie {'Title': 'My Node API Test!'}
  *
- * 
+ * @return {null}
  */
 BinaryBeast.prototype.call = function(svc, args, callback) {
 

@@ -19,7 +19,7 @@
  */
 var tournament = function(bb) {
 	this.bb = bb;
-}
+};
 
 /**
  * Properties
@@ -140,7 +140,7 @@ tournament.prototype.list = function(options, callback) {
  */
 tournament.prototype.round_update = function(tourney_id, bracket, round, best_of, map, date, callback) {
 
-	this.bb.call('Tourney.TourneyRound.Update, {
+	this.bb.call('Tourney.TourneyRound.Update', {
 		'tourney_id':		tourney_id,
 		'bracket':		bracket,
 		'round':		round,
@@ -185,6 +185,6 @@ tournament.prototype.round_update_batch = function(tourney_id, bracket, best_ofs
 		'maps':			maps,
 		'dates':		dates
 	}, callback);
-}
+};
 
 module.exports = tournament;
