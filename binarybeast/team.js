@@ -17,14 +17,14 @@
  * Argument accepts a reference to the API class, as it does the actual calls
  * This wrapper class only containers a list of service names + arguments
  */
-var team = function(bb) {
+var Team = function(bb) {
 	this.bb = bb;
 };
 
 /**
  * Properties
  */
-team.prototype = {
+Team.prototype = {
 
 	//Reference to the main API Class
 	bb: 		null
@@ -47,7 +47,7 @@ team.prototype = {
  * 
  * @return {null}
  */
-team.prototype.insert = function(tourney_id, display_name, options, callback) {
+Team.prototype.insert = function(tourney_id, display_name, options, callback) {
 
 	options = this.bb.extend({
 		'tourney_id':		tourney_id,
@@ -72,7 +72,7 @@ team.prototype.insert = function(tourney_id, display_name, options, callback) {
  *
  * @return {null}
  */
-team.prototype.update = function(tourney_team_id, options, callback) {
+Team.prototype.update = function(tourney_team_id, options, callback) {
 
 	this.bb.call('Tourney.TourneyTeam.Update', this.bb.extend({
 		'tourney_team_id':	tourney_team_id
@@ -95,7 +95,7 @@ team.prototype.update = function(tourney_team_id, options, callback) {
  * 
  * @return {null}
  */
-team.prototype.confirm = function(tourney_team_id, tourney_id, callback) {
+Team.prototype.confirm = function(tourney_team_id, tourney_id, callback) {
 
 	if(typeof tourney_id == 'function') {
 		callback = tourney_id;
@@ -123,7 +123,7 @@ team.prototype.confirm = function(tourney_team_id, tourney_id, callback) {
  * 
  * @return {null}
  */
-team.prototype.unconfirm = function(tourney_team_id, callback) {
+Team.prototype.unconfirm = function(tourney_team_id, callback) {
 	this.bb.call('Tourney.TourneyTeam.Unconform', {'tourney_team_id':tourney_team_id}, callback);
 };
 
@@ -143,7 +143,7 @@ team.prototype.unconfirm = function(tourney_team_id, callback) {
  * 
  * @return {null}
  */
-team.prototype.confirm = function(tourney_team_id, callback) {
+Team.prototype.confirm = function(tourney_team_id, callback) {
 	this.bb.call('Tourney.TourneyTeam.Ban', {'tourney_team_id':tourney_team_id}, callback);
 };
 
@@ -159,7 +159,7 @@ team.prototype.confirm = function(tourney_team_id, callback) {
  *
  * @return {null}
  */
-team.prototype.delete = function(tourney_team_id, callback) {
+Team.prototype.delete = function(tourney_team_id, callback) {
 	this.bb.call('Tourney.TourneyTeam.Delete', {'tourney_team_id':tourney_team_id}, callback);
 };
 
@@ -187,7 +187,7 @@ team.prototype.delete = function(tourney_team_id, callback) {
  *
  * @return {null}
  */
-team.prototype.reportWin = function(tourney_id, tourney_team_id, o_tourney_team_id, options, callback) {
+Team.prototype.reportWin = function(tourney_id, tourney_team_id, o_tourney_team_id, options, callback) {
 
 	if(typeof options == 'function') {
 		callback = options;
@@ -226,7 +226,7 @@ team.prototype.reportWin = function(tourney_id, tourney_team_id, o_tourney_team_
  *
  * @return {null}
  */
-team.prototype.getOpponent = function(tourney_team_id) {
+Team.prototype.getOpponent = function(tourney_team_id) {
 	this.bb.call('Tourney.TourneyTeam.GetOTourneyTeamID', {'tourney_team_id':tourney_team_id}, callback);
 };
 
@@ -239,11 +239,11 @@ team.prototype.getOpponent = function(tourney_team_id) {
  *
  * @return {null}
  */
-team.prototype.load = function(tourney_team_id) {
+Team.prototype.load = function(tourney_team_id) {
 	this.bb.call('Tourney.TourneyLoad.Team', {'tourney_team_id':tourney_team_id}, callback);
 };
 
 
 
 
-module.exports = team;
+module.exports = Team;

@@ -20,14 +20,14 @@
  * Argument accepts a reference to the API class, as it does the actual calls
  * This wrapper class only containers a list of service names + arguments
  */
-var game = function(bb) {
+var Game = function(bb) {
 	this.bb = bb;
 };
 
 /**
  * Properties
  */
-game.prototype = {
+Game.prototype = {
 
 	//Reference to the main API Class
 	bb: 		null
@@ -43,7 +43,7 @@ game.prototype = {
  *
  * @return {null}
  */
-game.prototype.search = function(filter, callback) {
+Game.prototype.search = function(filter, callback) {
 	this.bb.call('Game.GameSearch.Search', {game:filter}, callback);
 };
 
@@ -57,7 +57,7 @@ game.prototype.search = function(filter, callback) {
  *
  * @return {null}
  */
-game.prototype.listTop = function(filter, callback) {
+Game.prototype.listTop = function(filter, callback) {
 	if(typeof limit == 'function') {
 		callback = limit;
 		limit = 30;
@@ -69,4 +69,4 @@ game.prototype.listTop = function(filter, callback) {
 	this.bb.call('Game.GameSearch.Top',{'limit':limit}, callback);
 }
 
-module.exports = game;
+module.exports = Game;

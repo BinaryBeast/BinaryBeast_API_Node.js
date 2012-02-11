@@ -21,14 +21,14 @@
  * Argument accepts a reference to the API class, as it does the actual calls
  * This wrapper class only containers a list of service names + arguments
  */
-var country = function(bb) {
+var Country = function(bb) {
 	this.bb = bb;
 };
 
 /**
  * Properties
  */
-country.prototype = {
+Country.prototype = {
 
 	//Reference to the main API Class
 	bb: 		null
@@ -44,9 +44,9 @@ country.prototype = {
  *
  * @return {null}
  */
-country.prototype.search = function(filter, callback) {
+Country.prototype.search = function(filter, callback) {
 	this.bb.call('Country.CountrySearch.Search', {country:filter}, callback);
 };
 
 
-module.exports = country;
+module.exports = Country;

@@ -17,14 +17,14 @@
  * Argument accepts a reference to the API class, as it does the actual calls
  * This wrapper class only containers a list of service names + arguments
  */
-var tournament = function(bb) {
+var Tournament = function(bb) {
 	this.bb = bb;
 };
 
 /**
  * Properties
  */
-tournament.prototype = {
+Tournament.prototype = {
 
 	//Reference to the main API Class
 	bb: 		null
@@ -45,7 +45,7 @@ tournament.prototype = {
  *
  * @return {null}
  */
-tournament.prototype.create = function(options, callback) {
+Tournament.prototype.create = function(options, callback) {
 
 	//Extend default settings with whatever the user gives us
 	options = this.bb.extend({
@@ -68,7 +68,7 @@ tournament.prototype.create = function(options, callback) {
  *
  * @return {null}
  */
-tournament.prototype.delete = function(tourney_id, callback) {
+Tournament.prototype.delete = function(tourney_id, callback) {
 	this.bb.call('Tourney.TourneyDelete.Delete', {'tourney_id':tourney_id}, callback);
 };
 
@@ -86,7 +86,7 @@ tournament.prototype.delete = function(tourney_id, callback) {
  *
  * @return {null}
  */
-tournament.prototype.update = function(tourney_id, options, callback) {
+Tournament.prototype.update = function(tourney_id, options, callback) {
 	options = bb.extend(options, {'tourney_id':tourney_id});
 	bb.call('Tourney.TourneyDelete.Delete', options, callback);
 };
@@ -106,7 +106,7 @@ tournament.prototype.update = function(tourney_id, options, callback) {
  *
  * @return {null}
  */
-tournament.prototype.list = function(options, callback) {
+Tournament.prototype.list = function(options, callback) {
 
 	if(typeof options == 'function') {
 		callback = options;
@@ -138,7 +138,7 @@ tournament.prototype.list = function(options, callback) {
  *
  * @return {null}
  */
-tournament.prototype.round_update = function(tourney_id, bracket, round, best_of, map, date, callback) {
+Tournament.prototype.round_update = function(tourney_id, bracket, round, best_of, map, date, callback) {
 
 	this.bb.call('Tourney.TourneyRound.Update', {
 		'tourney_id':		tourney_id,
@@ -177,7 +177,7 @@ tournament.prototype.round_update = function(tourney_id, bracket, round, best_of
  *
  * @return void
  */
-tournament.prototype.round_update_batch = function(tourney_id, bracket, best_ofs, maps, dates, callback) {
+Tournament.prototype.round_update_batch = function(tourney_id, bracket, best_ofs, maps, dates, callback) {
 	this.bb.call('Tourney.TourneyRound.BatchUpdate', {
 		'tourney_id':		tourney_id,
 		'bracket':		bracket,
@@ -187,4 +187,4 @@ tournament.prototype.round_update_batch = function(tourney_id, bracket, best_ofs
 	}, callback);
 };
 
-module.exports = tournament;
+module.exports = Tournament;

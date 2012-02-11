@@ -23,9 +23,9 @@ var 	tournament	= require('./tournament'),
 /**
  * BinaryBeast constructor
  */
-var BinaryBeast = function(api_key) {
+var BinaryBeast = function(apiKey) {
 
-	this.api_key = api_key;
+	this.apiKey = apiKey;
 
 	//Instantiate the content-specific service wrapper modules
 	this.tournament = new tournament(this);	
@@ -54,7 +54,7 @@ BinaryBeast.prototype = {
 	TOURNEY_TYPE_CUP:	1,
 
 	//Store the api key
-	api_key: 		null,
+	apiKey: 		null,
 
 	//Service wrapper modules
 	tournament: 		null,
@@ -77,7 +77,7 @@ BinaryBeast.prototype.call = function(svc, args, callback) {
 	//Add a few things to the query, then compile it into a query string using querystring
 	args = this.extend(args, {
 		api_use_underscores:		1,
-		api_key:			this.api_key,
+		api_key:			this.apiKey,
 		api_service:			svc
 	});
 	//var query = querystring.stringify(args);
