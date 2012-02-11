@@ -3,7 +3,7 @@
  * used to manipulate participants within a tournament
  *
  * @author Brandon Simmons
- * @version 0.01
+ * @version 0.1.0
  *
  * @see http://binarybeast.com/api/info
  */
@@ -133,7 +133,10 @@ Team.prototype.unconfirm = function(tourney_team_id, callback) {
 };
 
 /**
- * bb.team.delete(tourney_team_id [, callback])
+ * bb.team.rm(tourney_team_id [, callback])
+ * 
+ * Same with bb.tournament.delete, the IDE was screaming at me that it was a reserved keyword
+ * I believe .rm is more than an acceptable replacement, unless you're a windows user :D (lol del, I REFUSE!!!)
  * 
  * This wrapper method will delete a team from a touranment
  * as long as the tournament has not been started or the team is unconfirmed
@@ -141,10 +144,11 @@ Team.prototype.unconfirm = function(tourney_team_id, callback) {
  * @see @link http://wiki.binarybeast.com/index.php?title=API_PHP:_team_delete
  *
  * @param tourney_team_id
+ * @param callback(result)
  *
  * @return {null}
  */
-Team.prototype.delete = function(tourney_team_id, callback) {
+Team.prototype.rm = function(tourney_team_id, callback) {
 	this.bb.call('Tourney.TourneyTeam.Delete', {'tourney_team_id':tourney_team_id}, callback);
 };
 

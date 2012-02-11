@@ -6,7 +6,7 @@
  * to use them in your tournaments
  *
  * @author Brandon Simmons
- * @version 0.01
+ * @version 0.1.0
  *
  * @see http://binarybeast.com/api/info
  */
@@ -38,7 +38,7 @@ Game.prototype = {
  *
  * Search through our list of games
  *
- * @param filte
+ * @param filter
  * @param callback(result)
  *
  * @return {null}
@@ -57,7 +57,7 @@ Game.prototype.search = function(filter, callback) {
  *
  * @return {null}
  */
-Game.prototype.listTop = function(filter, callback) {
+Game.prototype.listTop = function(limit, callback) {
 	if(typeof limit == 'function') {
 		callback = limit;
 		limit = 30;

@@ -3,7 +3,7 @@
  * used to manipulate tournaments
  *
  * @author Brandon Simmons
- * @version 0.01
+ * @version 0.1.0
  *
  * @see http://binarybeast.com/api/info
  */
@@ -35,13 +35,26 @@ Tournament.prototype = {
  * bb.tournament.create(options, callback)
  * 
  * Wrapper method for creating a tournament
+ * 
+ * Available options, check the wiki for their meanings, and default / possible values: 
+ *      string title
+ *      string description
+ *      int    public
+ *      string game_code            (SC2, BW, QL examples, @see http://wiki.binarybeast.com/index.php?title=API_PHP:_game_search, you can also use our game service wrappers to search (bb.game.search(filter,callback);)
+ *      int    type_id              (0 = elimination brackets, 1 = group rounds to elimination brackets, you can use constants for this (bb.BRACKET_CUP for example means round-robin)
+ *      int    elimination          (1 = single, 2 = double, again we have constants for this (bb.ELIMINATION_DOUBLE for example)
+ *      int    max_teams
+ *      int    team_mode            (id est 1 = 1v1, 2 = 2v2)
+ *      int    group_count
+ *      int    teams_from_group
+ *      date   date_start
+ *      string location
+ *      array  teams                You have the option to automatically add players/teams, just pass an array of player/team names
+ *      int    return_data          (0 = TourneyID and URL only, 1 = List of team id's inserted (from teams array), 2 = team id's and full tourney info dump)
  *
- * Visit http://wiki.binarybeast.com/index.php?title=Tourney.TourneyCreate.Create
- * for a list of available options (don't forget to use underscores instead of camelCase)
- * so TypeID should be type_id
  *
- * @param options	Array of options
- * @param callback	What to do with the result (expect 1 argument, a data object)
+ * @param options
+ * @param callback(result)
  *
  * @return {null}
  */
@@ -59,16 +72,22 @@ Tournament.prototype.create = function(options, callback) {
 
 
 /**
- * bb.tournament.delete(tourney_id, callback)
- *
+ * bb.tournament.rm(tourney_id, callback)
+ * 
  * Delete a tournament
+ * 
+ * OK so I don't know if this matters.. I'm still a node.js newb, this is my first project
+ * however my IDE si complaining that delete is a future keyword, so I'm not sure if 
+ * I can use tournament.prototype.delete as a function name
+ * 
+ * I'm sure anyone using a node.js module woudl be smart enough to know what tournament.rm does though eh? :D
  *
  * @param tourney_id
  * @param callback(result)
  *
  * @return {null}
  */
-Tournament.prototype.delete = function(tourney_id, callback) {
+Tournament.prototype.rm = function(tourney_id, callback) {
 	this.bb.call('Tourney.TourneyDelete.Delete', {'tourney_id':tourney_id}, callback);
 };
 
@@ -115,7 +134,7 @@ Tournament.prototype.list = function(options, callback) {
 	options = this.bb.extend({
 		filter: 	null,
 		page_size:  	30,
-		private: 	true
+		'private': 	true
 	}, options);
 
 	this.bb.call('Tourney.TourneyList.Creator', options, callback);
@@ -220,6 +239,21 @@ Tournament.prototype.start = function(tourney_id, seeding, teams, callback) {
 	}, callback);
 };
 
+
+
+/**
+ * bb.tournament.getOpenMatches(tourney_id, callback)
+ *
+ * Returns a list of currently open matches
+ * 
+ * @param tourney_id
+ * @param callback(result)
+ * 
+ * @return {null}
+ */
+Tournament.prototype.getOpenMatches = function(tourney_id, callback) {
+    this.bb.call('Tourney.TourneyLoad.OpenMatches', {'tourney_id':tourney_id}, callback);
+};
 
 
 module.exports = Tournament;

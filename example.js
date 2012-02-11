@@ -1,6 +1,11 @@
 var 	bb 	= require('./binarybeast'),
 	step	= require('step')
 
+/**
+ * This is a perfectly valid API key for a test account
+ * Feel free to use it, but you'll obviously need to change it before
+ * promoting to a production environment, as everyone has access to it
+ */
 bb = new bb('e17d31bfcbedd1c39bcb018c5f0d0fbf.4dcb36f5cc0d74.24632846');
 
 /**
@@ -17,13 +22,16 @@ var match = [];
 
 /**
  * let's avoid the madness of nested nested nested brackets, and use step
+ * 
+ * It's just a way of stepping through a series of steps just like it sounds, it's pretty cool
+ * each step can either be a stand alone step invoked by this(); or it can act as a callback for a service call etc from th eprevious step
  *
  * First step... is to create a tournament
  */
 step(
 	/**
  	 * First step - create a tournament
-	 * basic settings.. double elim, round robin, Quake Live
+	 * basic settings.. double elim, brackets only (no round robin), StarCraft 2
 	 */
 	function() {
 		var args = {
@@ -41,7 +49,7 @@ step(
 	},
 
 	/**
-	 * Handle the response from BinaryBeast
+	 * Handle the response from BinaryBeast after requesting to create a new tournament
 	 * If all goes well, we'll get a result of 200
 	 * in which case we take note of the tourney_id
 	 *
@@ -57,6 +65,7 @@ step(
 		url             = result.url;
 
 		console.info('Tourney ' + tourney_id + ' created successfully! (' + url + ')');
+		console.info('---');
 
 		//just to seperate things, let's "step" into the next function, which will setup round format
 		this();
@@ -93,7 +102,10 @@ step(
 		var dates	= ['2012-02-11 07:10', 'never', 'nevar!', '5th Sep 2012'];
 
 		//Again, not even going to bother with the callback, it'll work for sure :)
-		bb.tournament.roundUpdateBatch(tourney_id, bb.BRACKET_LOSERS, best_ofs, maps, dates, null);
+		bb.tournament.roundUpdateBatch(tourney_id, bb.BRACKET_LOSERS, best_ofs, maps, dates);
+
+                console.info('Round format updated successfully');
+                console.info('---');
 
 		//Let's move on, and start adding teams
 		this();
@@ -106,26 +118,33 @@ step(
 	 */
 	function() {
 
-		var stepper = this;
+                //Once all players are added, we'll invoke the next step
+                var inserted = 0;
+                var teamsCount = Object.keys(teams).length;
+                
+                //So we can invoke the next step from within the callback
+                var stepper = this;
 
 		for(var display_name in teams) addPlayer(display_name);
 		function addPlayer(display_name) {
+                    
 			bb.team.insert(tourney_id, display_name, {
 				country_code:	'NOR',	//From norway
-				status:		1 //Auto-confirm
+				status:		1       //Auto-confirm
 			}, function(result) {
+                            
 				console.info('Player ' + display_name + ' inserted successfully!'
 					+ ' (id: ' + result.tourney_team_id + ')'
 				);
+    
+                                //Remember this team's tourney_team_id
 				teams[display_name] = result.tourney_team_id;
 
-				//After we insert the final team, we'll move on
-				if(display_name == 'hacker') stepper();
+                                //all players inserted, move on
+                                inserted++;
+                                if(inserted >= teamsCount) stepper();
 			});
 		}
-
-		//Next step, we'll look at how to build a check-in system
-		this();
 	},
 
 	/**
@@ -138,12 +157,12 @@ step(
 		//So now, let's add one that is NOT automatically confirmed
 		teams['confirmationPlayer'] = 0;
 
-		//Grab a reference to this so we can call next from within the callback
-		var stepper = this;
+                //So we can step forward from within the callback
+                var stepper = this;
 
 		bb.team.insert(tourney_id, 'confirmationPlayer', {
 			country_code: 	'GBR',	//UK
-			status: 	0,	//NOT auto-confirmed
+			status: 	0	//NOT auto-confirmed
 		}, function(result) {
 
 			console.info('Player confirmationPlayer inserted successfully!'
@@ -162,15 +181,24 @@ step(
 	 * Ban a player
 	 */
 	function(result) {
-		console.log('Banning hacker');
 
-		var stepper = this;
+                console.log('---');
+            
+                //For stepping within the nested callback
+                var stepper = this;
 
+                //Make the call.
 		bb.team.ban(teams.hacker, function(result) {
-
-			console.log(result);
-			process.exit(1);
-
+                    
+                        if(result.result != 200) {
+                            console.error('Error banning hacker!');
+                            console.log(result);
+                            process.exit(1);
+                        }
+                
+			console.log('Hacker banned successfully!');
+			console.log('---');
+                        stepper();
 		});
 	},
 
@@ -179,7 +207,7 @@ step(
 	 */
 	function() {
 		//Let's move binary player 3 to japan
-		//Once again, I'm skipping the callback to keep this script a bit cleaner
+		//Once again, I'm skipping the callback to keep this script a bit cleaner, I'm 100% nothing will go wrong with such a simple call
 		//While we're at it, let's update his battle.net character code (network_name)
 		bb.team.update(teams['player_0b11'], {
 			country_code:			'JPN',
@@ -197,13 +225,18 @@ step(
 	 */
 	function() {
 		/**
-		 * The absolute simples way coudl be done in a single line, I'll show you but comment it out
+		 * The absolute simplest can be done in a single line, I'll show you but comment it out
  		 * this line would result in a randomly seeded bracket, EZ
+                 * 
+                 * But we're not using it, it's too simple, I want to show you how to use the more advanced features,
+                 * id est: ranked seeding
 		 */
+
+                //Very simple / fast way to start the brackets, will result in random positions for each confirmed team
 		//bb.tournament.start(tourney_id, callback);
 
 		/**
-		 * Let's manually RANK our players and use traditional seeding
+		 * Let's manually rank our players and use traditional seeding
 		 * We'll just refer to teams, which have the team id's keyed by display_name (silly I know but meh)
 	 	 */
 		var ranks = [
@@ -231,6 +264,7 @@ step(
 		}
 
 		console.info('Brackets started successfully!!!');
+		console.info('---');
 
 		//Next up: determine a player's status / current opponent
 		this();
@@ -243,10 +277,23 @@ step(
 	 */
 	function() {
 		
-		console.log('');
+		console.log('---');
+
+                //For stepping within a nested callback
+                var stepper = this;
+                
+                //Once each team is queried for curren topponent, we'll invoke the next step
+                var inserted = 0;
+                //minus one for "hacker", which we'll ignore
+                var teamsCount = Object.keys(teams).length - 1;
 
 		/**
 	  	 * Now obviously you don't want to do it this way.. but this is purely academic
+                 * looping through every player to ask for his team is not at all efficient
+                 * this is just showing you how to do it
+                 * 
+                 * In fact.. there's actually a service in bb.tournament called getOpenMatches that you can use
+                 * Though that won't help you figure out who's been eliminated, for that you'll want to use bb.team.getOpponent
 		 * 
 		 * Let's loop through each of our players, and see if he currently has an opponent
 		 */
@@ -255,17 +302,40 @@ step(
 			if(display_name != 'hacker') getOpponent(display_name, teams[display_name]);
 		}
 		function getOpponent(display_name, tourney_team_id) {
-			//very simple
+                    
+                    
+			//Make the call
 			bb.team.getOpponent(tourney_team_id, function(result) {
-				//I rather doubt this will happen lulz, -1 means he's been eliminated
+                                
+                                /**
+                                 *
+                                 * o_tourney_team_id -1 indicates that the team was eliminated
+                                 * 
+                                 * In our example however, this won't happen.. but I'm drawing it here for you to see anyway
+                                 * 
+                                 */ 
 				if(result.o_tourney_team_id == -1) {
 					console.error(display_name + ' eliminated!' + result);
 				}
-				//0 means he currently has no opponent, he must have had a freewin
+				
+                                
+                                /**
+                                 * 
+                                 * o_tourney_team_id 0 indicates the team currently has no opponent top lay, he's
+                                 * waiting on another match to finish
+                                 *
+                                 */
 				else if(result.o_tourney_team_id == 0) {
 					console.error(display_name + ' had a freewin and is waiting on a match');
 				}
-				//We have an opponent!
+
+                                /**
+                                 * 
+                                 * o_tourney_team_id > 0 indicates that we've found an opponent!
+                                 * 
+                                 * We found an opponent for this player!
+                                 *
+                                 */
 				else if(result.o_tourney_team_id) {
 					console.log(display_name + ' vs ' + getTeamName(result.o_tourney_team_id));
 					
@@ -275,6 +345,10 @@ step(
 						match = [tourney_team_id, result.o_tourney_team_id];
 					}
 				}
+                                
+                                //all players inserted, move on
+                                inserted++;
+                                if(inserted >= teamsCount) stepper();
 			});
 
 			//Quick display_name lookup
@@ -285,26 +359,21 @@ step(
 				return null;
 			}
 		}
-
-
-		/**
-		 * Well that's a basic rundown of tournament functionality...
-		 * next let's take a quick look at games /countries, then we'll call it a night
-		 */
-		this();
 	},
 
 	/**
+         *
 	 * Report a match!
+         * 
 	 */
 	function() {
-		//At this point we shoudl have 2 teams in var match[]
+		//At this point we should have 2 teams in var match[]
 		//Whoever happens to be first, we'll give the win to him
 		//It's fairly straight forward really, not much to it
 		//We'll add a few options to spice it up
 		bb.team.reportWin(tourney_id, match[0], match[1], {
 			'score':		500,		//Pwnt
-			'o_score':		'-1337' 	//He built zealots vs carriers
+			'o_score':		-1337           //He built zealots vs carriers, so he's leet * -1
 		}, this);
 	},
 
@@ -316,23 +385,29 @@ step(
 	 * Now let's take a quick look at the game / country search functions
 	 *
 	 */
-	function() {
+	function(result) {
 		//Let's just print out the top 3 most popular games at binarybeast right now
 		console.log('---');
+                
+                //Nested callback stepper
+                var stepper = this;
+
 		bb.game.listTop(3, function(result) {
 			for(var x in result.games) {
-				console.log('Game ' + (x+1) + ': ' + result.games[x].game
+				console.log('Game ' + (parseInt(x)+1) + ': ' + result.games[x].game
 					+ ' (game_code ' + result.games[x].game_code + ')'
 				);
 			}
 
 			//Move on to countries
-			this();
+			stepper();
 		});
 	},
 
 	/**
+         *
 	 * Let's try a quick country search... and then we'll call it a night
+         * 
 	 */
 	function() {
 		//print out a list of countries with the word 'united' in them

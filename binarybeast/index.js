@@ -6,6 +6,11 @@
  * You can find documentation on the API itself at http://binarybeast.com/api/info 
  *
  * Feel free to send any questions/suggestions to contact@binarybeast.com
+ * 
+ * I apologize in advance if I ignored any node.js conventions / best practices
+ * this is my first node.js project, help / feedback would be appreciated
+ * 
+ * @version 0.1.0
  */
 
 
@@ -17,15 +22,15 @@ var 	tournament	= require('./tournament'),
 	game		= require('./game'),
 	country		= require('./country'),
 	https		= require('https');
-//	querystring	= require('querystring');
+//	querystring	= require('querystring'); //ended up writing my own... querystring goofs up if you try to feed it anything nested
 
 
 /**
  * BinaryBeast constructor
  */
-var BinaryBeast = function(apiKey) {
+var BinaryBeast = function(api_key) {
 
-	this.apiKey = apiKey;
+	this.api_key = api_key;
 
 	//Instantiate the content-specific service wrapper modules
 	this.tournament = new tournament(this);	
@@ -38,7 +43,7 @@ var BinaryBeast = function(apiKey) {
  */
 BinaryBeast.prototype = {
 
-	//ghetto 'constants'
+	//ghetto 'constants', sorry.. I'm a java / php developer, I'm used to having constants available
 	VERSION: 			'0.0.1',
 	//
 	BRACKET_GROUPS:			0,
@@ -59,21 +64,22 @@ BinaryBeast.prototype = {
 	SEEDING_MANUAL:			'manual',
 
 	//Store the api key
-	apiKey: 		null,
+	api_key: 		null,
 
 	//Service wrapper modules
 	tournament: 		null,
 	team: 			null,
 	country:		null,
-	game:			null,
+	game:			null
 
 };
 
 /**
  * Make a service call
  * 
- * @param svc		A Service name (ie 'Tourney.TourneyCreate.Create')
- * @param args		An associate array of arguments ie {'Title': 'My Node API Test!'}
+ * @param svc               A Service name (ie 'Tourney.TourneyCreate.Create')
+ * @param args              An associate array of arguments ie {'Title': 'My Node API Test!'}
+ * @param callback(result)
  *
  * @return {null}
  */
@@ -82,7 +88,7 @@ BinaryBeast.prototype.call = function(svc, args, callback) {
 	//Add a few things to the query, then compile it into a query string using querystring
 	args = this.extend(args, {
 		api_use_underscores:		1,
-		api_key:			this.apiKey,
+		api_key:			this.api_key,
 		api_service:			svc
 	});
 	//var query = querystring.stringify(args);
@@ -105,6 +111,7 @@ BinaryBeast.prototype.call = function(svc, args, callback) {
 	var request = https.request(options, function(response) {
 		response.setEncoding('utf8');
 
+                //Concatenate the chunks as we receive them.. until we recieve the 'end' event
 		var body = '';
 		response.on('data', function(chunk) {
 			body += chunk;
@@ -148,7 +155,7 @@ BinaryBeast.prototype.extend = function(obj1, obj2) {
 /**
  * BinaryBeast.buildQuery(obj args)
  *
- * Unfortunately, the popular querystring does not currently seem to support "stringifying" complex objects
+ * Unfortunately, the querystring module I tried does not seem to support "stringifying" nested objects/arrays
  * so I'm writing my own query parser
  *
  * @return {string}
