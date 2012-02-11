@@ -138,7 +138,7 @@ Tournament.prototype.list = function(options, callback) {
  *
  * @return {null}
  */
-Tournament.prototype.round_update = function(tourney_id, bracket, round, best_of, map, date, callback) {
+Tournament.prototype.roundUpdate = function(tourney_id, bracket, round, best_of, map, date, callback) {
 
 	this.bb.call('Tourney.TourneyRound.Update', {
 		'tourney_id':		tourney_id,
@@ -177,7 +177,7 @@ Tournament.prototype.round_update = function(tourney_id, bracket, round, best_of
  *
  * @return void
  */
-Tournament.prototype.round_update_batch = function(tourney_id, bracket, best_ofs, maps, dates, callback) {
+Tournament.prototype.roundUpdateBatch = function(tourney_id, bracket, best_ofs, maps, dates, callback) {
 	this.bb.call('Tourney.TourneyRound.BatchUpdate', {
 		'tourney_id':		tourney_id,
 		'bracket':		bracket,
@@ -186,5 +186,40 @@ Tournament.prototype.round_update_batch = function(tourney_id, bracket, best_ofs
 		'dates':		dates
 	}, callback);
 };
+
+/**
+ * bb.tournament.start(tourney_id [, seeding [, teams [, callback]]])
+ * 
+ * This wrapper class is a shortcut to Tourney.TourneyStart.Start
+ * It will generate groups or brackets, depending on TypeID and Status
+ *
+ * @see @link http://wiki.binarybeast.com/index.php?title=API_PHP:_tournament_start
+ *
+ * @param tourney_id
+ * @param seeding	Options are 'random', 'manual', 'sports' (traditional 1v32, 8v9 etc), 'balanced'
+ * @param teams		An array of positions / ranks - only necessary if using a non-random method
+ * @param callback(result)
+ *
+ * @return {null}
+ */
+Tournament.prototype.start = function(tourney_id, seeding, teams, callback) {
+
+	if(typeof seeding == 'function') {
+		callback = seeding;
+		seeding = 'random';
+	}
+	if(typeof teams == 'function') {
+		callback = teams;
+		teams = [];
+	}
+
+	this.bb.call('Tourney.TourneyStart.Start', {
+		'tourney_id':		tourney_id,
+		'seeding':		seeding,
+		'teams':		teams
+	}, callback);
+};
+
+
 
 module.exports = Tournament;

@@ -39,19 +39,24 @@ var BinaryBeast = function(apiKey) {
 BinaryBeast.prototype = {
 
 	//ghetto 'constants'
-	VERSION: 		'0.0.1',
+	VERSION: 			'0.0.1',
 	//
-	BRACKET_GROUPS:		0,
-	BRACKET_WINNERS:	1,
-	BRACKET_LOSERS:		2,
-	BRACKET_FINALS:		3,
-	BRACKET_BRONZE:		4,
+	BRACKET_GROUPS:			0,
+	BRACKET_WINNERS:		1,
+	BRACKET_LOSERS:			2,
+	BRACKET_FINALS:			3,
+	BRACKET_BRONZE:			4,
 	//
-	ELIMINATION_SINGLE:	1,
-	ELIMINATION_DOUBLE:	2,
+	ELIMINATION_SINGLE:		1,
+	ELIMINATION_DOUBLE:		2,
 	//
-	TOURNEY_TYPE_BRACKETS:	0,
-	TOURNEY_TYPE_CUP:	1,
+	TOURNEY_TYPE_BRACKETS:		0,
+	TOURNEY_TYPE_CUP:		1,
+	//
+	SEEDING_RANDOM: 		'random',
+	SEEDING_SPORTS: 		'sports',
+	SEEDING_BALANCED: 		'balanced',
+	SEEDING_MANUAL:			'manual',
 
 	//Store the api key
 	apiKey: 		null,
@@ -92,7 +97,7 @@ BinaryBeast.prototype.call = function(svc, args, callback) {
 		headers: {
 			'Content-Type': 	'application/x-www-form-urlencoded',
 			'Content-Length':	query.length,
-			'User-Agent':		'BinaryBeast API Node.js (v' + this.VERSION + ')'
+			'User-Agent':		'BinaryBeast API Node.js v' + this.VERSION
 		}
         };
 

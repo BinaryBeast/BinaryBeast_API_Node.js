@@ -31,7 +31,7 @@ Team.prototype = {
 };
 
 /**
- * bb.team.insert(tourney_id, options, callback)
+ * bb.team.insert(tourney_id [, options, callback])
  *
  * Available options:
  *	string country_code		(ISO 3 character codes, you can use bb.country.search to find them too, or check wikipedia)
@@ -48,6 +48,11 @@ Team.prototype = {
  * @return {null}
  */
 Team.prototype.insert = function(tourney_id, display_name, options, callback) {
+
+	if(typeof options == 'function') {
+		callback = options;
+		options = {};
+	}
 
 	options = this.bb.extend({
 		'tourney_id':		tourney_id,
@@ -128,26 +133,6 @@ Team.prototype.unconfirm = function(tourney_team_id, callback) {
 };
 
 /**
- * bb.team.ban(tourney_team_id [, callback])
- * 
- * BANNEDED!!!
- * 
- * Ban a team from the tournament
- * 
- * Warning: this will NOT work if the tournament has already started, the best you can do is rename the player (using team_update, 'display_name' => 'foo')
- * 
- * @see @link http://wiki.binarybeast.com/index.php?title=API_PHP:_team_ban
- * 
- * @param tourney_team_id
- * @param callback(result)
- * 
- * @return {null}
- */
-Team.prototype.confirm = function(tourney_team_id, callback) {
-	this.bb.call('Tourney.TourneyTeam.Ban', {'tourney_team_id':tourney_team_id}, callback);
-};
-
-/**
  * bb.team.delete(tourney_team_id [, callback])
  * 
  * This wrapper method will delete a team from a touranment
@@ -162,6 +147,27 @@ Team.prototype.confirm = function(tourney_team_id, callback) {
 Team.prototype.delete = function(tourney_team_id, callback) {
 	this.bb.call('Tourney.TourneyTeam.Delete', {'tourney_team_id':tourney_team_id}, callback);
 };
+
+/**
+ * bb.team.ban(tourney_team_id [, callback])
+ * 
+ * BANNEDED!!!
+ * 
+ * Ban a team from the tournament
+ * 
+ * Warning: this will NOT work if the tournament has already started, the best you can do is rename the player (using team_update, 'display_name' => 'foo')
+ * 
+ * @see @link http://wiki.binarybeast.com/index.php?title=API_PHP:_team_ban
+ * 
+ * @param tourney_team_id
+ * @param callback(result)
+ *
+ * @return {null}
+ */
+Team.prototype.ban = function(tourney_team_id, callback) {
+	this.bb.call('Tourney.TourneyTeam.Ban', {'tourney_team_id':tourney_team_id}, callback);
+};
+
 
 /**
  * bb.team.reportWin(tourney_id, tourney_team_id, o_tourney_team_id, [options, callback]) 
@@ -206,7 +212,7 @@ Team.prototype.reportWin = function(tourney_id, tourney_team_id, o_tourney_team_
 };
 
 /**
- * bb.team.getOpponent(tourney_team_id)
+ * bb.team.getOpponent(tourney_team_id, callback)
  * 
  * This wrapper will return the TourneyTeamID of the given team (Tourney.TourneyTeam.GetOTourneyTeamID)
  * 
@@ -223,23 +229,25 @@ Team.prototype.reportWin = function(tourney_id, tourney_team_id, o_tourney_team_
  * about the winning team
  *
  * @param tourney_team_id
+ * @param callback(result)
  *
  * @return {null}
  */
-Team.prototype.getOpponent = function(tourney_team_id) {
+Team.prototype.getOpponent = function(tourney_team_id, callback) {
 	this.bb.call('Tourney.TourneyTeam.GetOTourneyTeamID', {'tourney_team_id':tourney_team_id}, callback);
 };
 
 /**
- * bb.team.load(tourney_team_id)
+ * bb.team.load(tourney_team_id, callback)
  *
  * Returns as much information about a team as possible
  * 
  * @param tourney_team_id
+ * @param callback(result)
  *
  * @return {null}
  */
-Team.prototype.load = function(tourney_team_id) {
+Team.prototype.load = function(tourney_team_id, callback) {
 	this.bb.call('Tourney.TourneyLoad.Team', {'tourney_team_id':tourney_team_id}, callback);
 };
 
