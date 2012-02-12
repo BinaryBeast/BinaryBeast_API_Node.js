@@ -1,4 +1,4 @@
-var 	bb 	= require('./binarybeast'),
+var 	bb 	= require('binarybeast'),
 	step	= require('step')
 
 /**
