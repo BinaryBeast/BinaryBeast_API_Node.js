@@ -74,6 +74,7 @@ Team.prototype.insert = function(tourney_id, display_name, options, callback) {
  * 
  * @param tourney_team_id
  * @param options 
+ * @param callback(result)
  *
  * @return {null}
  */
@@ -96,7 +97,9 @@ Team.prototype.update = function(tourney_team_id, options, callback) {
  * 
  * @see @link http://wiki.binarybeast.com/index.php?title=API_PHP:_team_confirm
  * 
- * @param type $tourney_team_id 
+ * @param tourney_team_id 
+ * @param tourney_id
+ * @param callback(result)
  * 
  * @return {null}
  */
@@ -174,7 +177,7 @@ Team.prototype.ban = function(tourney_team_id, callback) {
 
 
 /**
- * bb.team.reportWin(tourney_id, tourney_team_id, o_tourney_team_id, [options, callback]) 
+ * bb.team.reportWin(tourney_id, tourney_team_id [,o_tourney_team_id [, options [, callback]]]) 
  * 
  * This wrapper method will report a team's win (Tourney.TourneyTeam.ReportWin)
  *
@@ -199,7 +202,15 @@ Team.prototype.ban = function(tourney_team_id, callback) {
  */
 Team.prototype.reportWin = function(tourney_id, tourney_team_id, o_tourney_team_id, options, callback) {
 
-	if(typeof options == 'function') {
+        if(typeof o_tourney_team_id == 'function') {
+            callback = o_tourney_team_id;
+            o_tourney_team_id = null;
+        }
+        else if(typeof o_tourney_team_id == 'object') {
+            if(typeof options == 'function') callback = options;
+            options = o_tourney_team_id;
+        }
+	else if(typeof options == 'function') {
 		callback = options;
 		options = {};
 	}
@@ -209,7 +220,7 @@ Team.prototype.reportWin = function(tourney_id, tourney_team_id, o_tourney_team_
 		'tourney_team_id':	tourney_team_id,
 		'o_tourney_team_id':	o_tourney_team_id,
 		'score':		1,
-		'o_score':		0,
+		'o_score':		0
 	}, options);
 
 	this.bb.call('Tourney.TourneyTeam.ReportWin', options, callback);
@@ -226,7 +237,7 @@ Team.prototype.reportWin = function(tourney_id, tourney_team_id, o_tourney_team_
  * @see @link http://wiki.binarybeast.com/index.php?title=API_PHP:_team_get_opponent
  *
  * Evaluating the returned o_tourney_team_id will tell you what status of the requested team:
- *	o_tourney_team_id = -1 => Tne team has already been eliminated (see the returned 'victor' object to see who eliminated him
+ *	o_tourney_team_id = -1 => The team has already been eliminated (see the returned 'victor' object to see who eliminated him
  *	o_tourney_team_id = 0  => The team is currently waiting on an opponent
  *
  * Also, if the team has been eliminated, it will return an object 'Victor" with some information
