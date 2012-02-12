@@ -45,7 +45,7 @@ In this example.. we'll load a list of tournaments associated with our account, 
 	//We can provide JUST a callback, or an array of arguments and then a callback
 	//In our example, we're going to use options to make sure that bb doees NOT return any of our tournaments that we marked as private
 	//also in our example... we only want tournaments with the word 'LAN' in the title
-	bb.tournament.list.list({
+	bb.tournament.list({
 		filter: 	'LAN',
 		private:	false
 	}, function(response) {
