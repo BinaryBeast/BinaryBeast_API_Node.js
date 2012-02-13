@@ -57,6 +57,7 @@ Team.prototype.insert = function(tourney_id, display_name, options, callback) {
 	options = this.bb.extend({
 		'tourney_id':		tourney_id,
 		'display_name':		display_name,
+                'status':               1
 	}, options);
 
 	this.bb.call('Tourney.TourneyTeam.Insert', options, callback);
