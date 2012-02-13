@@ -1,4 +1,4 @@
-# BinaryBeast Node.js Modules v0.1.0
+# BinaryBeast Node.js Modules v0.1.2
 ### <http://binarybeast.com/api/info>
 
 These `modules` were written to ease development requirements for integrating the `binarybeast.com` API into your Node.js application
