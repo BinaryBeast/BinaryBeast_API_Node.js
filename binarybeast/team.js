@@ -3,7 +3,7 @@
  * used to manipulate participants within a tournament
  *
  * @author Brandon Simmons
- * @version 0.1.0
+ * @version 0.1.1
  *
  * @see http://binarybeast.com/api/info
  */

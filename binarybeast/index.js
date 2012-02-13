@@ -10,7 +10,7 @@
  * I apologize in advance if I ignored any node.js conventions / best practices
  * this is my first node.js project, help / feedback would be appreciated
  * 
- * @version 0.1.0
+ * @version 0.1.2
  */
 
 
