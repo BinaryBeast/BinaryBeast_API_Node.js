@@ -5,9 +5,9 @@
  */
 
 //Include the team_add example so we have a tournament with which to work
-var teams           = require('./team_add')
-    rounds          = require('./tournament_update_rounds')
-    , events        = require('events');
+var teams           = require('./team_add'),
+    rounds          = require('./tournament_update_rounds'),
+    events          = require('events');
 
 
 //the last example exported a reference to the API class for us

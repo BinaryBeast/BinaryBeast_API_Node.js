@@ -4,8 +4,8 @@
  * Create a new tournament
  */
 
-var bb              = require('../binarybeast/index.js')
-    , events        = require('events');
+var bb              = require('binarybeast'),
+    events          = require('events');
 
 bb = new bb('e17d31bfcbedd1c39bcb018c5f0d0fbf.4dcb36f5cc0d74.24632846');
 

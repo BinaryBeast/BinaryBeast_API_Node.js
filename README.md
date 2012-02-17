@@ -34,7 +34,7 @@ When you make a service call, you have the option of providing a `callback` func
 
 `result` will always be included in the returned object, and you can look at the value to see if your service call was successful.  Generally the result codes roughly resemble `http status codes`
 
-For example... `200` means the call was succesful, `403` means you're trying to someting you're not allowed to do... `404` means your service name was invalid.. and there are others
+For example... `200` means the call was successful, `403` means you're trying to something you're not allowed to do... `404` means your service name was invalid.. and there are others
 
 
 
@@ -52,7 +52,7 @@ In this example.. we'll load a list of tournaments associated with our account, 
 		if(response.result != 200) {
 			console.error(response);
 		} else for(var x in response.list) {
-			//console.log(response.list) to see the entire object obviously, there is a lot of information available about each tournamet
+			//console.log(response.list) to see the entire object obviously, there is a lot of information available about each tournament
 			console.log(response.list[x].title);
 		}
 	});
