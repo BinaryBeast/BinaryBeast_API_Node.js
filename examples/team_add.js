@@ -6,7 +6,7 @@
 
 //Include the create_tournament example so we have a tournament with which to work
 var tournament      = require('./tournament_create'),
-    events        = require('events');
+    events          = require('events');
     
 
 //the last example exported a reference to the API class for us
