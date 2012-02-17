@@ -3,7 +3,7 @@
  * used to manipulate participants within a tournament
  *
  * @author Brandon Simmons
- * @version 0.1.1
+ * @version 0.1.3
  *
  * @see http://binarybeast.com/api/info
  */
@@ -203,25 +203,25 @@ Team.prototype.ban = function(tourney_team_id, callback) {
  */
 Team.prototype.reportWin = function(tourney_id, tourney_team_id, o_tourney_team_id, options, callback) {
 
-        if(typeof o_tourney_team_id == 'function') {
-            callback = o_tourney_team_id;
-            o_tourney_team_id = null;
-        }
-        else if(typeof o_tourney_team_id == 'object') {
-            if(typeof options == 'function') callback = options;
-            options = o_tourney_team_id;
-        }
+    if(typeof o_tourney_team_id == 'function') {
+        callback = o_tourney_team_id;
+        o_tourney_team_id = null;
+    }
+    else if(typeof o_tourney_team_id == 'object') {
+        if(typeof options == 'function') callback = options;
+        options = o_tourney_team_id;
+    }
 	else if(typeof options == 'function') {
 		callback = options;
 		options = {};
 	}
 
 	options = this.bb.extend({
-		'tourney_id':		tourney_id,
-		'tourney_team_id':	tourney_team_id,
+		'tourney_id':           tourney_id,
+		'tourney_team_id':      tourney_team_id,
 		'o_tourney_team_id':	o_tourney_team_id,
-		'score':		1,
-		'o_score':		0
+		'score':                1,
+		'o_score':              0
 	}, options);
 
 	this.bb.call('Tourney.TourneyTeam.ReportWin', options, callback);
@@ -266,7 +266,6 @@ Team.prototype.getOpponent = function(tourney_team_id, callback) {
 Team.prototype.load = function(tourney_team_id, callback) {
 	this.bb.call('Tourney.TourneyLoad.Team', {'tourney_team_id':tourney_team_id}, callback);
 };
-
 
 
 

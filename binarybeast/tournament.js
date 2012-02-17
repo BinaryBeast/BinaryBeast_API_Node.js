@@ -3,7 +3,7 @@
  * used to manipulate tournaments
  *
  * @author Brandon Simmons
- * @version 0.1.0
+ * @version 0.1.3
  *
  * @see http://binarybeast.com/api/info
  */
@@ -18,7 +18,7 @@
  * This wrapper class only containers a list of service names + arguments
  */
 var Tournament = function(bb) {
-	this.bb = bb;
+    this.bb = bb;
 };
 
 /**
@@ -26,8 +26,8 @@ var Tournament = function(bb) {
  */
 Tournament.prototype = {
 
-	//Reference to the main API Class
-	bb: 		null
+    //Reference to the main API Class
+    bb: 		null
 };
 
 
@@ -60,14 +60,14 @@ Tournament.prototype = {
  */
 Tournament.prototype.create = function(options, callback) {
 
-	//Extend default settings with whatever the user gives us
-	options = this.bb.extend({
-		title: 		'Node API Test',
-		type_id:	this.bb.TOURNEY_TYPE_BRACKETS,
-		elimination:	this.bb.ELIMINATION_SINGLE
-	}, options);
+    //Extend default settings with whatever the user gives us
+    options = this.bb.extend({
+        title:          'Node API Test',
+        type_id:        this.bb.TOURNEY_TYPE_BRACKETS,
+        elimination:	this.bb.ELIMINATION_SINGLE
+    }, options);
 
-	this.bb.call('Tourney.TourneyCreate.Create', options, callback);
+    this.bb.call('Tourney.TourneyCreate.Create', options, callback);
 };
 
 
@@ -88,7 +88,7 @@ Tournament.prototype.create = function(options, callback) {
  * @return {null}
  */
 Tournament.prototype.rm = function(tourney_id, callback) {
-	this.bb.call('Tourney.TourneyDelete.Delete', {'tourney_id':tourney_id}, callback);
+    this.bb.call('Tourney.TourneyDelete.Delete', {'tourney_id':tourney_id}, callback);
 };
 
 
@@ -106,8 +106,8 @@ Tournament.prototype.rm = function(tourney_id, callback) {
  * @return {null}
  */
 Tournament.prototype.update = function(tourney_id, options, callback) {
-	options = bb.extend(options, {'tourney_id':tourney_id});
-	bb.call('Tourney.TourneyDelete.Delete', options, callback);
+    options = bb.extend(options, {'tourney_id':tourney_id});
+    bb.call('Tourney.TourneyDelete.Delete', options, callback);
 };
 
 /**
@@ -127,17 +127,17 @@ Tournament.prototype.update = function(tourney_id, options, callback) {
  */
 Tournament.prototype.list = function(options, callback) {
 
-	if(typeof options == 'function') {
-		callback = options;
-		options = {};
-	}
-	options = this.bb.extend({
-		filter: 	null,
-		page_size:  	30,
-		'private': 	true
-	}, options);
+    if(typeof options == 'function') {
+        callback    = options;
+        options     = {};
+    }
+    options = this.bb.extend({
+        filter: 	null,
+        page_size:  	30,
+        'private': 	true
+    }, options);
 
-	this.bb.call('Tourney.TourneyList.Creator', options, callback);
+    this.bb.call('Tourney.TourneyList.Creator', options, callback);
 };
 
 /**
@@ -159,14 +159,14 @@ Tournament.prototype.list = function(options, callback) {
  */
 Tournament.prototype.roundUpdate = function(tourney_id, bracket, round, best_of, map, date, callback) {
 
-	this.bb.call('Tourney.TourneyRound.Update', {
-		'tourney_id':		tourney_id,
-		'bracket':		bracket,
-		'round':		round,
-		'best_of':		best_of,
-		'map':			map,
-		'date':			date
-	}, callback);
+    this.bb.call('Tourney.TourneyRound.Update', {
+        'tourney_id':		tourney_id,
+        'bracket':          bracket,
+        'round':            round,
+        'best_of':          best_of,
+        'map':              map,
+        'date':             date
+    }, callback);
 };
 
 /**
@@ -197,13 +197,13 @@ Tournament.prototype.roundUpdate = function(tourney_id, bracket, round, best_of,
  * @return void
  */
 Tournament.prototype.roundUpdateBatch = function(tourney_id, bracket, best_ofs, maps, dates, callback) {
-	this.bb.call('Tourney.TourneyRound.BatchUpdate', {
-		'tourney_id':		tourney_id,
-		'bracket':		bracket,
-		'best_ofs':		best_ofs,
-		'maps':			maps,
-		'dates':		dates
-	}, callback);
+    this.bb.call('Tourney.TourneyRound.BatchUpdate', {
+        'tourney_id':		tourney_id,
+        'bracket':          bracket,
+        'best_ofs':         best_ofs,
+        'maps':             maps,
+        'dates':            dates
+    }, callback);
 };
 
 /**
@@ -215,7 +215,7 @@ Tournament.prototype.roundUpdateBatch = function(tourney_id, bracket, best_ofs, 
  * @see @link http://wiki.binarybeast.com/index.php?title=API_PHP:_tournament_start
  *
  * @param tourney_id
- * @param seeding	Options are 'random', 'manual', 'sports' (traditional 1v32, 8v9 etc), 'balanced'
+ * @param seeding	Options are 'random', 'manual', 'sports' (traditional 1v32, 8v9 etc), 'balanced' - the bb class has constants for these values
  * @param teams		An array of positions / ranks - only necessary if using a non-random method
  * @param callback(result)
  *
@@ -223,37 +223,49 @@ Tournament.prototype.roundUpdateBatch = function(tourney_id, bracket, best_ofs, 
  */
 Tournament.prototype.start = function(tourney_id, seeding, teams, callback) {
 
-	if(typeof seeding == 'function') {
-		callback = seeding;
-		seeding = 'random';
-	}
-	if(typeof teams == 'function') {
-		callback = teams;
-		teams = [];
-	}
+    if(typeof seeding == 'function') {
+        callback    = seeding;
+        seeding     = this.bb.SEEDING_RANDOM;
+    }
+    if(typeof teams == 'function') {
+        callback    = teams;
+        teams       = [];
+    }
 
-	this.bb.call('Tourney.TourneyStart.Start', {
-		'tourney_id':		tourney_id,
-		'seeding':		seeding,
-		'teams':		teams
-	}, callback);
+    this.bb.call('Tourney.TourneyStart.Start', {
+        'tourney_id':   tourney_id,
+        'seeding':      seeding,
+        'teams':        teams
+    }, callback);
 };
 
 
-
 /**
- * bb.tournament.getOpenMatches(tourney_id, callback)
- *
- * Returns a list of currently open matches
+ * bb.tournament.load(tourney_id [, callback])
+ * 
+ * Load details about a tournament
  * 
  * @param tourney_id
  * @param callback(result)
  * 
  * @return {null}
  */
-Tournament.prototype.getOpenMatches = function(tourney_id, callback) {
-    this.bb.call('Tourney.TourneyLoad.OpenMatches', {'tourney_id':tourney_id}, callback);
+Tournament.prototype.load = function(tourney_id, callback) {
+    this.bb.call('Tourney.TourneyLoad.Info', {'tourney_id':tourney_id}, callback);
 };
 
+/**
+ * bb.tournament.loadRoundFormat(tourney_id)
+ * 
+ * Loads current round format (BO, Maps, etc)
+ * 
+ * @param tourney_id
+ * @param callback(result)
+ * 
+ * @return {null}
+ */
+Tournament.prototype.loadRoundFormat = function(tourney_id, callback) {
+    this.bb.call('Tourney.TourneyLoad.Rounds', {'tourney_id':tourney_id, bracket:'*'}, callback);
+};
 
 module.exports = Tournament;

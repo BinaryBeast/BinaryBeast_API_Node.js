@@ -6,7 +6,7 @@
  * to use them in your tournaments
  *
  * @author Brandon Simmons
- * @version 0.1.0
+ * @version 0.1.3
  *
  * @see http://binarybeast.com/api/info
  */

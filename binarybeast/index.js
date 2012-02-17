@@ -10,7 +10,7 @@
  * I apologize in advance if I ignored any node.js conventions / best practices
  * this is my first node.js project, help / feedback would be appreciated
  * 
- * @version 0.1.2
+ * @version 0.1.3
  */
 
 
@@ -18,11 +18,11 @@
 
 //Modules containing wrapper methods and other depdencies
 var 	tournament	= require('./tournament'),
-	team		= require('./team'),
-	game		= require('./game'),
-	country		= require('./country'),
-	https		= require('https');
-//	querystring	= require('querystring'); //ended up writing my own... querystring goofs up if you try to feed it anything nested
+        team		= require('./team'),
+        match		= require('./match'),
+        game		= require('./game'),
+        country		= require('./country'),
+        https		= require('https');
 
 
 /**
@@ -33,10 +33,11 @@ var BinaryBeast = function(api_key) {
 	this.api_key = api_key;
 
 	//Instantiate the content-specific service wrapper modules
-	this.tournament = new tournament(this);	
-	this.team	= new team(this);
-	this.game	= new game(this);
-	this.country	= new country(this);
+	this.tournament     = new tournament(this);	
+	this.team           = new team(this);
+	this.match          = new match(this);
+	this.game           = new game(this);
+	this.country        = new country(this);
 }
 /**
  * Properties
@@ -44,7 +45,7 @@ var BinaryBeast = function(api_key) {
 BinaryBeast.prototype = {
 
 	//ghetto 'constants', sorry.. I'm a java / php developer, I'm used to having constants available
-	VERSION: 			'0.0.1',
+	VERSION: 			'0.1.3',
 	//
 	BRACKET_GROUPS:			0,
 	BRACKET_WINNERS:		1,
@@ -67,10 +68,11 @@ BinaryBeast.prototype = {
 	api_key: 		null,
 
 	//Service wrapper modules
-	tournament: 		null,
+	tournament:     null,
 	team: 			null,
-	country:		null,
-	game:			null
+	match: 			null,
+	game:			null,
+    country:		null
 
 };
 
@@ -87,25 +89,25 @@ BinaryBeast.prototype.call = function(svc, args, callback) {
 
 	//Add a few things to the query, then compile it into a query string using querystring
 	args = this.extend(args, {
-		api_use_underscores:		1,
-		api_key:			this.api_key,
+		api_use_underscores:    1,
+		api_key:                this.api_key,
 		api_service:			svc
 	});
 	//var query = querystring.stringify(args);
 	var query = this.buildQuery(args);
 
 	//Compile the request information
-        var options = {
-                host:   'binarybeast.com',
-                port:   443,
-                path:   '/api',
-                method: 'POST',
-		headers: {
-			'Content-Type': 	'application/x-www-form-urlencoded',
-			'Content-Length':	query.length,
-			'User-Agent':		'BinaryBeast API Node.js v' + this.VERSION
-		}
-        };
+    var options = {
+        host:   'binarybeast.com',
+        port:   443,
+        path:   '/api',
+        method: 'POST',
+        headers: {
+            'Content-Type': 	'application/x-www-form-urlencoded',
+            'Content-Length':	query.length,
+            'User-Agent':		'BinaryBeast API Node.js v' + this.VERSION
+        }
+    };
 
 	//Setup the request
 	var request = https.request(options, function(response) {

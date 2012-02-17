@@ -7,7 +7,7 @@
  * 	for example, for your norwegian friends heh
  *
  * @author Brandon Simmons
- * @version 0.1.0
+ * @version 0.1.3
  *
  * @see http://binarybeast.com/api/info
  */
