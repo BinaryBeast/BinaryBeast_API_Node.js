@@ -1,4 +1,4 @@
-# BinaryBeast Node.js Modules v0.1.2
+# BinaryBeast Node.js Modules v0.1.3
 ### <http://binarybeast.com/api/info>
 
 These `modules` were written to ease development requirements for integrating the `binarybeast.com` API into your Node.js application
@@ -159,6 +159,16 @@ For seeding, you have the following options:
 
 Retrieves a list of matches that currently have 2 players that need to play
 
+### bb.tournament.load(tourney_id, callback)
+
+Load details obout a tournament
+
+### bb.tournament.loadRoundFormat(tourney_id, callback)
+
+Load round format (BO, Maps, etc)
+
+
+
 ## team.js module functions
 
 Examples assume you've called your instantiated main BinaryBeast class var bb
@@ -230,18 +240,18 @@ Available Options:
 
   string `replay`		A URL to the replay_pack for this match
 
-  string `map`  	       The first map played (this will change later, as it doesn't currently support reporting a series of games from this service)
+  string `map`  	    The first map played (this will change later, as it doesn't currently support reporting a series of games from this service)
 
   string `notes`		An optional description of the match
 
-  boolean `force`		You can pass in true for this paramater, to force advancing the team even if he has no opponent (it would have thrown an error otherwise)
+  boolean `force`		You can pass in true for this parameter, to force advancing the team even if he has no opponent (it would have thrown an error otherwise)
 
 
 ### bb.team.getOpponent(tourney_team_id, callback)
 
 Retrieve the current opponent of a team
 
-Note: All this method wil give you is the tourney_team_id of the opponent, if you need more information, use bb.team.load(tourney_team_id)
+Note: All this method will give you is the tourney_team_id of the opponent, if you need more information, use bb.team.load(tourney_team_id)
 
 Evaluating the returned o_tourney_team_id will tell you what status of the requested team:
 
@@ -252,4 +262,61 @@ Evaluating the returned o_tourney_team_id will tell you what status of the reque
 
 ### bb.team.load(tourney_team_id, callback)
 
-Simply returss information about the requested team
+Simply returns information about the requested team
+
+## match.js module functions
+
+
+### bb.match.saveDetails(tourney_match_id, `array` winners, `array` scores, `array` o_scores, `array` maps, callback
+
+Save deatils of a match (individual game scores, maps, etc)
+
+Note: the `scores` array should indicate the score of each game for the overall match winner
+
+for example, look at the following array:
+
+    var scores = [17, 3, 37, 1009];
+
+This tells us that the player that won the entire match, got a 17 in the first game, a 3 in game 2, 37 in match 3, and so forth
+
+Same goes for o_scores, but it applies to the overall loser of the match
+
+
+### bb.match.load(tourney_match_id, callback)
+
+Load details of a match
+
+### bb.match.stream(tourney_id)
+
+BinaryBeast keeps track of matches that you've been sent with this service, so you can theoretically
+use it to stream match results, if you use in conjuction with say.. an interval (see `examples/match_stream.js`)
+
+## game.js module functions
+
+List functions in the game.js module
+
+
+### bb.game.search(filter, callback)
+
+Search through our list of games
+
+This is an important function to note because when creating touranments, you need to know
+our `game_code` format if you want to specify a game
+
+
+### bb.game.listTop([limit], callback)
+
+Returns a list of currently most popular games
+
+
+
+## country.js module functions
+
+List functions defined in the country.js module
+
+
+### bb.country.search(filter, callback)
+
+For your convenience, we've opened our database of ISO country codes for you to search through
+
+When inserting teams, you can refer to our list of country_code (ISO3) for defining the player / team's flag
