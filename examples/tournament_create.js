@@ -9,10 +9,7 @@ var bb              = require('binarybeast'),
 
 bb = new bb('e17d31bfcbedd1c39bcb018c5f0d0fbf.4dcb36f5cc0d74.24632846');
 
-/**
- * If other examples want to use this example.. we'll emit a 'Complete' event
- * with the a reference to bb and the tourney_id
- */
+//Allow dependent examples to use the results of this example once we're done with this one
 module.exports      = new events.EventEmitter();
 module.exports.bb   = bb;
 

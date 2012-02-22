@@ -10,8 +10,7 @@
 var bb = require('binarybeast');
 bb = new bb('e17d31bfcbedd1c39bcb018c5f0d0fbf.4dcb36f5cc0d74.24632846');
 
-//Let's retrieve a list of countires with the word 'united' in them
-
+//Search for a list of games with the word 'war' in them
 bb.game.search('war', function(result) {
 
     console.log('');

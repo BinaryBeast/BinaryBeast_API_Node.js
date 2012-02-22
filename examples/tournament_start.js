@@ -14,7 +14,7 @@ var teams           = require('./team_add'),
 var bb = teams.bb;
 
 
-//Allow other examples to add teams without, we'll emit 'complete' when we're done
+//Allow dependent examples to use the results of this example once we're done with this one
 module.exports      = new events.EventEmitter();
 module.exports.bb   = bb;
 
