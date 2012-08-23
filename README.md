@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/BinaryBeast/BinaryBeast_API_Node.js.png)](http://travis-ci.org/BinaryBeast/BinaryBeast_API_Node.js)
 # BinaryBeast Node.js Modules v0.1.3
 ### <http://binarybeast.com/api/info>
 
