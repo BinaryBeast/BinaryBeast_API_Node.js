@@ -1,0 +1,32 @@
+{
+    "name": "binarybeast",
+    "version": "0.2.0",
+    "description": "BinaryBeast API Library",
+    "main": "lib/index.js",
+    "dependencies": {
+        "underscore": "*",
+        "redis": "*",
+        "request": "*"
+    },
+    "directories": {
+        "example": "examples"
+    },
+    "scripts": {
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/BinaryBeast/BinaryBeast_API_Node.js.git"
+    },
+    "keywords": [
+        "binarybeast",
+        "tournament",
+        "brackets",
+        "esports",
+        "games"
+    ],
+    "author": "Brandon Simmons",
+    "license": "BSD",
+    "bugs": {
+        "url": "https://github.com/BinaryBeast/BinaryBeast_API_Node.js/issues"
+    }
+}
