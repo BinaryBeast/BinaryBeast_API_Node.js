@@ -1,0 +1,22 @@
+{
+  "name": "binarybeast",
+  "version": "0.2.0",
+  "description": "BinaryBeast API Modules",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/BinaryBeast/BinaryBeast_API_Node.js.git"
+  },
+  "author": "Brandon Simmons",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BinaryBeast/BinaryBeast_API_Node.js/issues"
+  },
+  "homepage": "http://binarybeast.com/api/info"
+}
