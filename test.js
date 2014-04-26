@@ -5,15 +5,17 @@ var
     utils   = require('./lib/core/utils');
 
 //Setup the cache handler
-/*bb.cache.set_engine('redis', {
+///*
+bb.cache.set_engine('redis', {
     db: 2,
     port: 6370
-});*/
-///*
+});
+//*/
+/*
 bb.cache.set_engine('couchdb', {
     db: 'bb_api_node_cache'
 });
-//*/
+*/
 
 var handle_tour = function(tournament, error) {
     if(!tournament) {
@@ -29,9 +31,10 @@ var handle_tour = function(tournament, error) {
         'group_count', 'group_mode'
     ]));
 
-    utils.log('Loading group round brackets... ');
+    utils.log('Fetching results... ');
     //tournament.participants(handle_participants);
-    tournament.draw_groups(handle_groups);
+    //tournament.draw_groups(handle_groups);
+    tournament.draw_brackets(handle_brackets);
 
 };
 var handle_participants = function(participants, error) {
@@ -66,7 +69,7 @@ var handle_groups = function(groups, error, options) {
         return;
     }
 
-    utils.log('Successfully fetched group standings and results', groups);
+    utils.log('Successfully fetched group standings and results');
     _.each(groups, function(group, label) {
         utils.log(' ** group ' + label + ' **', null, false, true);
 
@@ -79,7 +82,7 @@ var handle_groups = function(groups, error, options) {
                 _.each(matches, function(match, index) {
                     utils.log('match ' + (parseInt(index) + 1) + '\n', {
                         'team1': match.team ? _.pick(match.team, 'id', 'display_name', 'race', 'country') : null,
-                        'team2': match.team ? _.pick(match.opponent, 'id', 'display_name', 'race', 'country') : null,
+                        'team2': match.opponent ? _.pick(match.opponent, 'id', 'display_name', 'race', 'country') : null,
                         'winner': match.winner()
                     }, false, true);
                 });
@@ -89,8 +92,39 @@ var handle_groups = function(groups, error, options) {
 
 };
 
+var handle_brackets = function(brackets, error, options) {
+    if( !brackets ) {
+        utils.error('Error fetching brackets', {
+            error: error,
+            brackets: brackets,
+            options: options
+        });
+        return;
+    }
 
-var tournament = new bb.tournament('xHotS1404181');
+    utils.log('Successfully fetched elimination bracket results');
 
-utils.log('loading xHotS1404181');
+    _.each(brackets, function(rounds, bracket) {
+        utils.log('\n ** ' + bracket + ' bracket **', null, false, true);
+
+        _.each(rounds, function(matches, round) {
+            utils.log(' -round ' + (parseInt(round) + 1) + '-', null, false, true);
+
+            _.each(matches, function(match, index) {
+                utils.log('match ' + (parseInt(index) + 1) + '\n', {
+                    'team1': match.team ? _.pick(match.team, 'id', 'display_name', 'race', 'country') : null,
+                    'team2': match.opponent ? _.pick(match.opponent, 'id', 'display_name', 'race', 'country') : null,
+                    'winner': match.winner()
+                }, false, true);
+            });
+        })
+    });
+
+};
+
+
+var tournament = new bb.tournament('xHotS1404181dho');
+//var tournament = new bb.tournament('xHotS1404181');
+
+utils.log('loading xHotS1404181dho');
 tournament.load(handle_tour);
