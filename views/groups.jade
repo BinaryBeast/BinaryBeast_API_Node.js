@@ -1,0 +1,45 @@
+html
+  head
+    link(rel='stylesheet', href='css/reset.css')
+    link(rel='stylesheet', href='css/groups.css')
+    link(rel='stylesheet', type='text/css', href='http://fonts.googleapis.com/css?family=Montserrat:400,700')
+  body
+    .container
+      - var maxGroups = 0;
+      div.group-container
+        each group, groupName in groups
+          - maxGroups++
+          if maxGroups <= 8
+            div.group
+              if groupName === 'a'
+                - groupName = 'GROUP A'
+              if groupName === 'b'
+                - groupName = 'GROUP B'
+              if groupName === 'c'
+                - groupName = 'GROUP C'
+              if groupName === 'd'
+                - groupName = 'GROUP D'
+              if groupName === 'e'
+                - groupName = 'GROUP E'
+              if groupName === 'f'
+                - groupName = 'GROUP F'
+              if groupName === 'g'
+                - groupName = 'GROUP G'
+              if groupName === 'h'
+                - groupName = 'GROUP H'
+              div.group-header= groupName
+                div.orange-border
+              ul.group-content
+                li
+                  span.first-column.header
+                  span.second-column.header.wins W
+                  span.third-column.header.losses L
+                  span.forth-column.header.maps MAPS
+                each team in group.teams
+                  li
+                    span.first-column
+                      span.text-container= team.display_name
+                    span.second-column.wins= team.match_wins
+                    span.third-column.losses= team.match_losses
+                    span.forth-column.maps= team.game_wins+ '-' +team.losses
+

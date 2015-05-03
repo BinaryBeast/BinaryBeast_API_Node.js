@@ -1,28 +1,19 @@
 {
-  "name": "binarybeast",
-  "version": "0.2.0",
-  "description": "BinaryBeast API Library",
-  "main": "lib/index.js",
-  "directories": {
-    "example": "examples"
+  "name": "binary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "scripts": {},
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/BinaryBeast/BinaryBeast_API_Node.js.git"
-  },
-  "author": "Brandon Simmons",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/BinaryBeast/BinaryBeast_API_Node.js/issues"
-  },
-  "homepage": "http://binarybeast.com/api/info",
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "request": "~2.34.0",
-    "underscore": "~1.6.0"
-  },
-  "optionalDependencies": {
-      "cradle": "~0.6.7",
-    "redis": "~0.10.1"
+    "cradle": "^0.6.9",
+    "express": "^4.12.3",
+    "jade": "^1.9.2",
+    "redis": "^0.12.1",
+    "request": "^2.55.0",
+    "underscore": "^1.8.3"
   }
 }
